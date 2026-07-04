@@ -253,17 +253,19 @@
     border:1px solid var(--line);
     margin-bottom:30px;
     background:var(--surface);
+    max-width:fit-content;
   }
   @media(max-width:760px){.project{grid-template-columns:1fr;}}
 
   .project-media{
-    aspect-ratio:16/28;
+    aspect-ratio:5/6;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
     position:relative;
-    overflow:hidden;
+    overflow:auto;
   }
-  @media(max-width:760px){.project-media{border-right:none;border-bottom:1px solid var(--line);}}
-  .project-media video{width:100%;height:100%;object-fit:cover;display:none;}
+  @media(max-width:760px){.project-media{aspect-ratio:4/3;border-right:none;border-bottom:1px solid var(--line);}}
+  .project-media video{width:100%;flex:1 1 auto;min-height:0;object-fit:cover;display:block;}
+  .project-media a{flex-shrink:0;}
   .project-media .ph-label{
     font-size:11px;color:var(--text-muted);text-align:center;padding:0 24px;
     text-transform:uppercase;letter-spacing:.08em;line-height:1.8;
@@ -281,7 +283,7 @@
   .project-flow{
     font-size:12px;color:var(--text-muted);margin-bottom:16px;
     padding:10px 12px;background:var(--void);border:1px solid var(--line);
-    overflow-x:auto;white-space:nowrap;
+    white-space:normal;overflow-wrap:break-word;
   }
   .project-desc{font-size:13.5px;color:var(--silver);margin-bottom:18px;}
   .project-tags{display:flex;flex-wrap:wrap;gap:8px;}
@@ -535,7 +537,7 @@
 <section id="contact">
   <div class="wrap">
     <div class="contact-box">
-      <h2>¿TIENES UN PROCESO MANUAL QUE TE<br>ESTÁ COSTANDO <span style="color:var(--burgundy-bright);">TIEMPO</span> 
+      <h2>¿TIENES UN PROCESO MANUAL QUE TE ESTÁ COSTANDO <span style="color:var(--burgundy-bright);">TIEMPO</span> 
         Y <span style="color:var(--burgundy-bright);">DINERO</span>?</h2>
       <p>Cuéntame qué hace tu equipo a mano hoy y te digo si tiene sentido automatizarlo — sin costo por la conversación inicial!</p>
       <div class="contact-links">
