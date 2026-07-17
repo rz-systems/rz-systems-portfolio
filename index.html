@@ -7,20 +7,24 @@
 <meta name="description" content="RZ Systems: automatización con n8n, IA y Python para PYMEs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#0a0a0a;
-    --surface:#141316;
-    --surface-2:#1c1a1e;
-    --line:#2a2730;
+    --void:#0a0908;
+    --surface:#141011;
+    --line:rgba(194,58,86,.16);
+    --line-soft:rgba(255,255,255,.06);
+    --burgundy-deep:#3d0f1c;
     --burgundy:#7a1930;
     --burgundy-bright:#c23a56;
-    --silver:#c4c1bc;
-    --text:#edebe7;
-    --text-muted:#726e6a;
+    --burgundy-shine:#e8a3b4;
+    --bone:#f3ede7;
+    --bone-soft:#d9d0c9;
+    --muted:#8f8386;
+    --display:'Cormorant Garamond', 'Times New Roman', serif;
+    --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --mono:'JetBrains Mono', ui-monospace, monospace;
-  } 
+  }
 
   *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -28,55 +32,127 @@
 
   body{
     background:var(--void);
-    color:var(--text);
-    font-family:var(--mono);
+    color:var(--bone-soft);
+    font-family:var(--body);
     font-size:16px;
-    line-height:1.6;
+    line-height:1.7;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
 
-  body::before{
+  a{color:inherit;text-decoration:none;}
+
+  ::selection{background:var(--burgundy);color:var(--bone);}
+
+  :focus-visible{outline:1px solid var(--burgundy-bright);outline-offset:4px;}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ---------- HOVER: proyectos ---------- */
+  .project{
+    transition:border-color .35s ease, transform .35s ease, box-shadow .35s ease;
+  }
+  .project:hover{
+    border-color:var(--burgundy-bright);
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px -20px rgba(194,58,86,.35);
+  }
+
+  /* ---------- HOVER: tags ---------- */
+  .tag{
+    transition:border-color .25s, color .25s, transform .25s;
+  }
+  .tag:hover{
+    transform:translateY(-2px);
+  }
+
+  /* ---------- HOVER: botones (barrido de brillo) ---------- */
+  .btn{position:relative;overflow:hidden;}
+  .btn::after{
     content:'';
-    position:fixed;
-    inset:0;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size:64px 64px;
-    opacity:.08;
+    position:absolute;inset:0;
+    background:linear-gradient(120deg, transparent 30%, rgba(243,237,231,.15) 50%, transparent 70%);
+    transform:translateX(-120%);
+    transition:transform .6s ease;
+    pointer-events:none;
+  }
+  .btn:hover::after{transform:translateX(120%);}
+
+  /* ---------- Ambiente: glow flotante detrás del hero ---------- */
+  header.hero::before{
+    content:'';
+    position:absolute;
+    top:-20%;right:-10%;
+    width:600px;height:600px;
+    background:radial-gradient(circle, rgba(194,58,86,.18), transparent 70%);
+    filter:blur(60px);
+    animation:float-glow 14s ease-in-out infinite;
     pointer-events:none;
     z-index:0;
   }
-
-  a{color:inherit;text-decoration:none;}
-
-  ::selection{background:var(--burgundy);color:var(--text);}
-
-  :focus-visible{outline:2px solid var(--burgundy-bright);outline-offset:3px;}
-
-  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+  @keyframes float-glow{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-40px,30px) scale(1.15);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    header.hero::before{animation:none;}
+  }
+  /* ---------- metallic burgundy signature ---------- */
+  .metal-text{
+    background:linear-gradient(100deg,
+      var(--burgundy-deep) 0%,
+      var(--burgundy) 22%,
+      var(--burgundy-shine) 46%,
+      var(--burgundy-bright) 62%,
+      var(--burgundy-deep) 100%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--burgundy-bright);
+    animation:shimmer 9s ease-in-out infinite;
+  }
+  @keyframes shimmer{
+    0%,100%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+  }
 
   /* ---------- NAV ---------- */
   nav{
     position:fixed;top:0;left:0;right:0;
     z-index:100;
-    background:rgba(10,10,10,.82);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
+    background:rgba(10,9,8,.78);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
   }
   nav .wrap{
     display:flex;align-items:center;justify-content:space-between;
-    height:64px;
+    height:68px;
   }
   .logo{
-    font-weight:700;letter-spacing:.02em;font-size:15px;
-    display:flex;align-items:center;gap:8px;
+    font-family:var(--display);
+    font-weight:500;letter-spacing:.05em;font-size:20px;
+    display:flex;align-items:center;gap:9px;
+    color:var(--bone);
   }
-  .logo .dot{width:7px;height:7px;background:var(--burgundy-bright);border-radius:50%;
-    box-shadow:0 0 10px var(--burgundy-bright);}
-  .navlinks{display:flex;gap:32px;font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
-  .navlinks a{transition:color .2s;}
+  .logo .dot{width:6px;height:6px;background:var(--burgundy-bright);border-radius:50%;
+    box-shadow:0 0 8px var(--burgundy-bright);}
+  .navlinks{display:flex;gap:36px;font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+  .navlinks a{transition:color .25s;}
   .navlinks a:hover{color:var(--burgundy-bright);}
   @media(max-width:640px){.navlinks{display:none;}}
 
@@ -84,106 +160,123 @@
   header.hero{
     min-height:100vh;
     display:flex;align-items:center;
-    padding-top:64px;
+    padding-top:68px;
     position:relative;
   }
   .hero-grid{
     display:grid;
     grid-template-columns:1.1fr .9fr;
-    gap:48px;
+    gap:64px;
     align-items:center;
     width:100%;
   }
   @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
 
   .eyebrow{
-    font-size:12px;
-    color:var(--burgundy-bright);
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--muted);
     text-transform:uppercase;
-    letter-spacing:.18em;
-    margin-bottom:18px;
-    display:flex;align-items:center;gap:10px;
+    letter-spacing:.2em;
+    margin-bottom:26px;
+    display:flex;align-items:center;gap:12px;
   }
-  .eyebrow::before{content:'';width:24px;height:1px;background:var(--burgundy-bright);}
-  .eyebrow::after{content:'';width: 24px;height:1px;background:var(--burgundy-bright);}
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--burgundy-bright);}
+  .eyebrow::after{content:'';width:22px;height:1px;background:var(--burgundy-bright);}
 
   h1{
-    font-size:clamp(2.6rem, 6vw, 4.2rem);
-    font-weight:800;
-    line-height:1.02;
-    letter-spacing:-.02em;
-    margin-bottom:20px;
-  }
-  h1 span{color:var(--burgundy-bright);}
-
-  .tagline{
-    font-size:18px;
-    color:var(--silver);
-    font-style:italic;
+    font-family:var(--display);
+    font-size:clamp(3rem, 7vw, 5.4rem);
+    font-weight:600;
+    line-height:.98;
+    letter-spacing:-.01em;
     margin-bottom:22px;
   }
-  .tagline .en{color:var(--text-muted);font-style:normal;font-size:14px;}
+
+  .tagline{
+    font-family:var(--display);
+    font-style:italic;
+    font-size:22px;
+    font-weight:500;
+    color:var(--bone);
+    margin-bottom:26px;
+  }
+  .tagline .en{font-family:var(--mono);color:var(--muted);font-style:normal;font-size:12px;letter-spacing:.04em;}
 
   .hero-desc{
+    font-family:var(--body);
     max-width:480px;
-    color:var(--text-muted);
-    font-size:15px;
-    margin-bottom:34px;
+    color:var(--muted);
+    font-size:15.5px;
+    line-height:1.8;
+    margin-bottom:38px;
   }
+  .hero-desc b, .hero-desc span{color:var(--burgundy-bright);font-weight:500;}
 
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
   .btn{
     font-family:var(--mono);
-    font-size:13px;
-    padding:13px 22px;
-    border:1px solid var(--line);
+    font-size:12px;
+    padding:14px 26px;
+    border:1px solid var(--line-soft);
     background:transparent;
-    color:var(--text);
+    color:var(--bone-soft);
     cursor:pointer;
-    transition:all .2s;
-    letter-spacing:.03em;
+    transition:all .25s;
+    letter-spacing:.06em;
+    text-transform:uppercase;
   }
-  .btn-primary{background:var(--burgundy);border-color:var(--burgundy);}
-  .btn-primary:hover{background:var(--burgundy-bright);border-color:var(--burgundy-bright);}
-  .btn-ghost:hover{border-color:var(--silver);color:var(--silver);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--burgundy-deep), var(--burgundy) 45%, var(--burgundy-bright) 75%, var(--burgundy-deep));
+    background-size:220% 220%;
+    background-position:0% 0%;
+    border-color:transparent;
+    color:var(--bone);
+  }
+  .btn-primary:hover{background-position:100% 100%;}
+  .btn-ghost:hover{border-color:var(--burgundy-bright);color:var(--burgundy-bright);}
 
   /* ---------- FLOW DIAGRAM (signature element) ---------- */
   .flow-box{
-    background:var(--surface);
-    border:1px solid var(--line);
-    padding:24px;
+    border:1px solid var(--line-soft);
+    padding:26px;
     position:relative;
   }
   .flow-box .term-label{
-    font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;
-    margin-bottom:14px;display:flex;justify-content:space-between;
+    font-family:var(--mono);
+    font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;
+    margin-bottom:16px;display:flex;justify-content:space-between;
   }
   .flow-box svg{width:100%;height:auto;display:block;}
 
   .flow-node-label{
     font-family:var(--mono);
     font-size:10.5px;
-    fill:var(--silver);
+    fill:var(--bone-soft);
     letter-spacing:.04em;
     text-transform:uppercase;
   }
   .flow-node-sub{
     font-family:var(--mono);
     font-size:9px;
-    fill:var(--text-muted);
+    fill:var(--muted);
   }
   .flow-path{
     fill:none;
     stroke:var(--burgundy-bright);
-    stroke-width:1.6;
+    stroke-width:1.4;
     stroke-dasharray:6 5;
     stroke-dashoffset:400;
-    animation:draw 2.6s ease forwards;
+    animation:dash-move 2.5s linear infinite;
   }
+  @keyframes dash-move{
+  to{stroke-dashoffset:200;}
+  }
+
   .flow-path.p2{animation-delay:.5s;}
   .flow-node-rect{
-    fill:var(--surface-2);
-    stroke:var(--line);
+    fill:var(--void);
+    stroke:var(--line-soft);
     stroke-width:1;
   }
   .flow-node-rect.active{
@@ -198,51 +291,70 @@
   @media (prefers-reduced-motion: reduce){
     .flow-path{animation:none;stroke-dashoffset:0;}
     .flow-node-rect.active{animation:none;}
+    .metal-text{animation:none;}
   }
 
   /* ---------- SECTIONS ---------- */
-  section{padding:110px 0;border-top:1px solid var(--line);position:relative;}
+  section{padding:130px 0;border-top:1px solid var(--line-soft);position:relative;}
 
-  .section-head{margin-bottom:52px;}
+  .section-head{margin-bottom:60px;}
   .section-num{
-    font-size:12px;color:var(--text-muted);letter-spacing:.1em;
+    font-family:var(--mono);
+    font-size:11.5px;color:var(--muted);letter-spacing:.14em;
   }
   .section-title{
-    font-size:clamp(1.6rem,3vw,2.2rem);
-    font-weight:800;margin-top:8px;
+    font-family:var(--display);
+    font-size:clamp(1.8rem,3.4vw,2.6rem);
+    font-weight:600;margin-top:10px;
+    color:var(--bone);
   }
 
-  /* ---------- ABOUT (terminal card) ---------- */
+  /* ---------- ABOUT (terminal card, restyled minimal) ---------- */
   .terminal{
-    background:var(--surface);
-    border:1px solid var(--line);
-    max-width:720px;
+    max-width:700px;
+    border-left:2px solid var(--burgundy);
+    padding-left:32px;
   }
   .terminal-bar{
     display:flex;align-items:center;gap:8px;
-    padding:12px 16px;
-    border-bottom:1px solid var(--line);
+    padding-bottom:18px;
   }
-  .terminal-bar span{width:10px;height:10px;border-radius:50%;background:var(--line);}
-  .terminal-bar .tt{margin-left:8px;font-size:12px;color:var(--text-muted);letter-spacing:.05em;}
-  .terminal-body{padding:26px;font-size:14px;}
-  .terminal-body .prompt{color:var(--burgundy-bright);}
-  .terminal-body .cmd{color:var(--silver);}
-  .terminal-body p{color:var(--text-muted);margin:6px 0 18px 0;}
-  .terminal-body .out-line{margin:2px 0;}
-  .terminal-body .key{color:var(--silver);}
+  .terminal-bar span{display:none;}
+  .terminal-bar .tt{
+    font-family:var(--mono);
+    margin-left:0;font-size:11.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  }
+  .terminal-body{font-size:15px;}
+  .terminal-body .prompt{color:var(--burgundy-bright);font-family:var(--mono);}
+  .terminal-body .cmd{
+    font-family:var(--display);
+    font-style:italic;
+    font-size:20px;
+    font-weight:600;
+    color:var(--bone);
+  }
+  .terminal-body p{
+    font-family:var(--body);
+    color:var(--muted);
+    line-height:1.85;
+    margin:10px 0 30px 0;
+    font-size:15px;
+  }
+  .terminal-body .out-line{margin:2px 0 4px;}
+  .terminal-body .key{font-family:var(--mono);color:var(--bone-soft);font-size:13.5px;}
 
   /* ---------- STACK ---------- */
   .tag-grid{display:flex;flex-wrap:wrap;gap:10px;}
   .tag{
-    border:1px solid var(--line);
-    padding:9px 14px;
-    font-size:12.5px;
-    color:var(--silver);
-    background:var(--surface);
-    transition:border-color .2s, color .2s;
+    font-family:var(--mono);
+    border:1px solid var(--line-soft);
+    padding:10px 16px;
+    font-size:12px;
+    color:var(--muted);
+    background:transparent;
+    transition:border-color .25s, color .25s;
   }
-  .tag:hover{border-color:var(--burgundy-bright);color:var(--text);}
+  .tag:hover{border-color:var(--burgundy-bright);color:var(--bone);}
   .tag .flag{color:var(--burgundy-bright);}
 
   /* ---------- PROJECTS ---------- */
@@ -250,9 +362,8 @@
     display:grid;
     grid-template-columns:.9fr 1.1fr;
     gap:0;
-    border:1px solid var(--line);
-    margin-bottom:30px;
-    background:var(--surface);
+    border:1px solid var(--line-soft);
+    margin-bottom:34px;
     max-width:fit-content;
   }
   @media(max-width:760px){.project{grid-template-columns:1fr;}}
@@ -263,60 +374,101 @@
     position:relative;
     overflow:auto;
   }
-  @media(max-width:760px){.project-media{aspect-ratio:4/3;border-right:none;border-bottom:1px solid var(--line);}}
+  @media(max-width:760px){.project-media{aspect-ratio:4/3;border-right:none;border-bottom:1px solid var(--line-soft);}}
   .project-media video{width:100%;flex:1 1 auto;min-height:0;object-fit:cover;display:block;}
   .project-media a{flex-shrink:0;}
   .project-media .ph-label{
-    font-size:11px;color:var(--text-muted);text-align:center;padding:0 24px;
+    font-family:var(--mono);
+    font-size:11px;color:var(--muted);text-align:center;padding:0 24px;
     text-transform:uppercase;letter-spacing:.08em;line-height:1.8;
   }
-  .project-media .ph-label b{color:var(--silver);display:block;font-size:12px;}
+  .project-media .ph-label b{color:var(--bone-soft);display:block;font-size:12px;}
 
-  .project-body{padding:28px;}
+  .project-body{padding:30px;}
   .project-status{
+    font-family:var(--mono);
     display:inline-flex;align-items:center;gap:7px;
-    font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
-    color:var(--burgundy-bright);margin-bottom:12px;
+    font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--burgundy-bright);margin-bottom:14px;
   }
-  .project-status::before{content:'';width:6px;height:6px;background:var(--burgundy-bright);border-radius:50%;}
-  .project-title{font-size:19px;font-weight:700;margin-bottom:10px;}
+  .project-status::before{content:'';width:5px;height:5px;background:var(--burgundy-bright);border-radius:50%;}
+  .project-title{
+    font-family:var(--display);
+    font-size:22px;font-weight:600;margin-bottom:12px;
+    color:var(--bone);
+  }
   .project-flow{
-    font-size:12px;color:var(--text-muted);margin-bottom:16px;
-    padding:10px 12px;background:var(--void);border:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:11.5px;color:var(--muted);margin-bottom:18px;
+    padding:10px 12px;border:1px solid var(--line-soft);
     white-space:normal;overflow-wrap:break-word;
   }
-  .project-desc{font-size:13.5px;color:var(--silver);margin-bottom:18px;}
+  .project-desc{
+    font-family:var(--body);
+    font-size:14px;color:var(--bone-soft);margin-bottom:20px;
+    line-height:1.8;
+  }
   .project-tags{display:flex;flex-wrap:wrap;gap:8px;}
   .project-tags span{
-    font-size:11px;color:var(--text-muted);border:1px solid var(--line);
-    padding:4px 9px;
+    font-family:var(--mono);
+    font-size:11px;color:var(--muted);border:1px solid var(--line-soft);
+    padding:5px 10px;
   }
 
   /* ---------- CONTACT ---------- */
   .contact-box{
     text-align:center;
-    padding:70px 20px;
-    border:1px solid var(--line);
-    background:var(--surface);
+    padding:80px 20px;
+    border:1px solid var(--line-soft);
   }
-  .contact-box h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:16px;}
-  .contact-box p{color:var(--text-muted);max-width:460px;margin:0 auto 30px auto;font-size:14px;}
+  .contact-box h2{
+    font-family:var(--display);
+    font-size:clamp(2rem,4.4vw,2.8rem);font-weight:600;margin-bottom:20px;
+    line-height:1.15;
+  }
+  .contact-box p{
+    font-family:var(--body);
+    color:var(--muted);max-width:460px;margin:0 auto 34px auto;font-size:14.5px;line-height:1.8;
+  }
   .contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
 
   footer{
-    padding:32px 0;
-    border-top:1px solid var(--line);
-    font-size:12px;color:var(--text-muted);
+    font-family:var(--mono);
+    padding:36px 0;
+    border-top:1px solid var(--line-soft);
+    font-size:11.5px;color:var(--muted);
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
   }
   footer .dot{color:var(--burgundy-bright);}
 </style>
 </head>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const revealEls = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach((el) => {
+    // stagger: calcula el índice del elemento dentro de su propio grupo (padre)
+    const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+    const i = siblings.indexOf(el);
+    el.style.transitionDelay = `${i * 80}ms`;
+    observer.observe(el);
+  });
+});
+</script>
 <body>
 
 <nav>
   <div class="wrap">
-    <div class="logo"><span class="dot"></span>RZ systems</div>
+    <div class="logo"><span class="dot"></span>RZ SYSTEMS</div>
     <div class="navlinks">
       <a href="#about">sobre mi</a>
       <a href="#stack">stack</a>
@@ -329,27 +481,27 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow">automatización · PYMEs</div>
-      <h1>RZ SYSTEMS</h1>
-      <div class="tagline">"Tiene la receta." <span class="en">— Has the recipe.</span></div>
-      <p class="hero-desc">
+      <div class="eyebrow reveal">automatización · PYMEs</div>
+      <h1 class="metal-text reveal">RZ SYSTEMS</h1>
+      <div class="tagline reveal">"Tiene la receta." <span class="en">— Has the recipe.</span></div>
+      <p class="hero-desc reveal">
         Renato, <span style="color:var(--burgundy-bright);">18 años</span>, Chile. Construyo automatizaciones con n8n e IA para
         PYMEs que están <span style="color:var(--burgundy-bright);">perdiendo tiempo</span> y <span style="color:var(--burgundy-bright);">dinero</span> en procesos manuales.
         FLUJOS QUE FUNCIONAN Y QUEDAN DOCUMENTADOS.
       </p>
-      <div class="cta-row">
+      <div class="cta-row reveal">
         <a href="#projects" class="btn btn-primary">PROYECTOS →</a>
         <a href="#contact" class="btn btn-ghost">CONTACTAR</a>
       </div>
     </div>
 
-    <div class="flow-box">
+    <div class="flow-box reveal">
       <div class="term-label"><span>~ WORKFLOW ~</span><span>● live</span></div>
       <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg">
         <!-- connectors -->
         <path class="flow-path" d="M 78 45 C 130 45, 130 110, 180 110" />
         <path class="flow-path p2" d="M 258 110 C 300 110, 300 175, 342 175" />
-        <path class="flow-path" d="M 78 175 C 130 175, 130 110, 180 110" style="animation-delay:.15s" />
+        <path class="flow-path" d="M 78 175 C 130 175, 130 110, 180 110" style="animation-delay:.20s"/>
 
         <!-- node: trigger -->
         <rect class="flow-node-rect active" x="0" y="26" width="85" height="38" rx="2"/>
@@ -377,17 +529,17 @@
 
 <section id="about">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="section-num">01 / SOBRE MI</div>
       <div class="section-title">¿Quién soy?</div>
     </div>
 
-    <div class="terminal">
+    <div class="terminal reveal">
       <div class="terminal-bar">
         <span></span><span></span><span></span>
-        <div class="tt">RenatoZúñiga</div>
+        <div class="tt">Renato Zúñiga</div>
       </div>
-      <div class="terminal-body">
+      <div class="terminal-body reveal">
         <div class="out-line"><span class="prompt">➤</span> <span class="cmd">Yo</span></div>
         <p>
           Tengo 18 años, vivo en Chile. Comencé reparando hardware de mis equipos viejos durante la 
@@ -412,38 +564,38 @@
 
 <section id="stack">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="section-num">02 / STACK</div>
       <div class="section-title">Herramientas(Hasta hoy)</div>
     </div>
-    <div class="tag-grid">
-      <div class="tag"><span class="flag">CORE</span> n8n (self-hosted, Railway)</div>
-      <div class="tag"><span class="flag">AI</span> Groq API</div>
-      <div class="tag"><span class="flag">BACKEND</span> Python · FastAPI · SQLAlchemy</div>
-      <div class="tag"><span class="flag">CLOUD</span> Google Cloud (Sheets / Drive / Calendar API / Places API)</div>
-      <div class="tag"><span class="flag">MSG</span> Twilio (WhatsApp) · Telegram Bot API</div>
-      <div class="tag"><span class="flag">DOCS</span> Notion API</div>
-      <div class="tag"><span class="flag">FRONTEND</span> HTML/CSS</div>
+    <div class="tag-grid reveal">
+      <div class="tag"><span class="flag reveal">CORE</span> n8n (self-hosted, Railway)</div>
+      <div class="tag"><span class="flag reveal">AI</span> Groq API</div>
+      <div class="tag"><span class="flag reveal">BACKEND</span> Python · FastAPI · SQLAlchemy</div>
+      <div class="tag"><span class="flag reveal">CLOUD</span> Google Cloud (Sheets / Drive / Calendar API / Places API)</div>
+      <div class="tag"><span class="flag reveal">MSG</span> Twilio (WhatsApp) · Telegram Bot API</div>
+      <div class="tag"><span class="flag reveal">DOCS</span> Notion API</div>
+      <div class="tag"><span class="flag reveal">FRONTEND</span> HTML/CSS</div>
     </div>
   </div>
 </section>
 
 <section id="projects">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div class="section-num">03 / PROYECTOS</div>
       <div class="section-title">Portafolio</div>
     </div>
 
     <!-- PROJECT 1 -->
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/lead.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://youtu.be/lCMI6KP-2TU" target="_blank" class="btn btn-primary">Ver completo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ Lead Capture</div>
+        <div class="project-title">LEAD CAPTURE</div>
         <div class="project-flow">Google Form → Google Sheets Trigger (Row Added) → Set → Google Sheets (Append Row)</div>
         <p class="project-desc">
           Sistema que captura automáticamente los datos de clientes potenciales desde 
@@ -459,13 +611,13 @@
 
     <!-- PROJECT 2 -->
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/leadradar.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://youtu.be/77rRzahYfM8" target="_blank" class="btn btn-primary">Ver completo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ Lead Radar</div>
+        <div class="project-title">LEAD RADAR</div>
         <div class="project-flow">Trigger manual → Google Places API (búsqueda rubro+comuna) → Filtro → Chequeo de duplicados → Notion CRM (registro de lead nuevo)</div>
         <p class="project-desc">
           Agente de prospección automatizada que descubre negocios PYME por rubro y 
@@ -481,13 +633,13 @@
     
     <!-- PROJECT 3 -->
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/calendar.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://youtu.be/jvp4I_ULkpA" target="_blank" class="btn btn-primary">Ver completo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ Smart Schedulling</div>
+        <div class="project-title">SMART SCHEDULLING</div>
         <div class="project-flow">Google Form → Google Sheets Trigger → Google Calendar → IF → Crear evento/Ocupado</div>
         <p class="project-desc">
           Sistema de agendamiento automático que permite a los clientes reservar reuniones 
@@ -505,13 +657,13 @@
     </div>
 
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/agepropio.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://rz-systems.github.io/rz-agendamiento/" target="_blank" class="btn btn-primary">Pruébalo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ Smart Schedulling Agendamiendo Propio</div>
+        <div class="project-title">SS AGENDAMIENTO PROPIO</div>
         <div class="project-flow">HTML → Selección de hora → Revisión Calendar → Gmail(confirmación) → Recarga disponibilidad</div>
         <p class="project-desc">
           Sistema de agendamiento tipo Calendly, construido desde cero: una API con dos endpoints 
@@ -529,13 +681,13 @@
 
     <!-- PROJECT 5 -->
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/whatsapp.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://youtu.be/vvm8VN05-Dw" target="_blank" class="btn btn-primary">Ver completo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ WhatsApp Bot</div>
+        <div class="project-title">WHATSAPP BOT</div>
         <div class="project-flow">Twilio Webhook → n8n → Respond 200 → Switch (keyword routing) → Respuesta automática</div>
         <p class="project-desc">
           Bot de WhatsApp que atiende clientes automáticamente las 24 horas, sin intervención humana. 
@@ -554,13 +706,13 @@
 
     <!-- PROJECT 6 -->
     <div class="project">
-      <div class="project-media">
+      <div class="project-media reveal">
         <video src="assets/telegram.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
         <a href="https://youtu.be/jDJDWrktWng" target="_blank" class="btn btn-primary">Ver completo →</a>
       </div>
-      <div class="project-body">
+      <div class="project-body reveal">
         <div class="project-status">activo</div>
-        <div class="project-title">RZ Content Intelligence</div>
+        <div class="project-title">CONTENT INTELLIGENCE</div>
         <div class="project-flow">RSS (HN + Reddit) → Dedup Sheets → Filtro IA (Groq) → Resumen ES → Telegram</div>
         <p class="project-desc">
           Sistema de monitoreo y resumen de contenido tech con IA, diseñado para dueños de negocios 
@@ -582,11 +734,11 @@
 
 <section id="contact">
   <div class="wrap">
-    <div class="contact-box">
-      <h2>¿TIENES UN PROCESO MANUAL QUE TE ESTÁ COSTANDO <span style="color:var(--burgundy-bright);">TIEMPO</span> 
-        Y <span style="color:var(--burgundy-bright);">DINERO</span>?</h2>
-      <p>Cuéntame qué hace tu equipo a mano hoy y te digo si tiene sentido automatizarlo — !sin costo por la conversación inicial!</p>
-      <div class="contact-links">
+    <div class="contact-box reveal">
+      <h2>¿TIENES UN PROCESO MANUAL QUE TE ESTÁ COSTANDO <span class="metal-text">TIEMPO</span> 
+        Y <span class="metal-text">DINERO</span>?</h2>
+      <p>Cuéntame qué hace tu equipo a mano hoy y te digo si tiene sentido automatizarlo, !sin costo por la conversación inicial!</p>
+      <div class="contact-links reveal">
         <a href="mailto:rvzg24renato@gmail.com" class="btn btn-primary">ESCRIBE UN EMAIL ⬇</a>
         <a href="https://wa.me/56978866601" class="btn btn-ghost" target="_blank">↳ Whatsapp</a>
       </div>
